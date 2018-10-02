@@ -1,13 +1,14 @@
-//
-//  particle.hpp
-//  Week5_hmwk
-//
-//  Created by Lan Z on 9/30/18.
-//
+#pragma once
 
-#ifndef particle_hpp
-#define particle_hpp
+#include "ofMain.h"
 
-#include <stdio.h>
-
-#endif /* particle_hpp */
+class particle{
+    
+public:
+    void setup();
+    void update(float num);
+    void draw(float pos_x,float pos_y,float v);
+    void ChangePos(float change);
+    
+      glm::vec2 pos,radius,speed;
+};
