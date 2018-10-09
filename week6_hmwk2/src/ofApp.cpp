@@ -9,6 +9,8 @@ void ofApp::setup(){
     ofSetFrameRate(100.);
     ofEnableSmoothing();
     
+    
+    
     for (int i = 0; i < nMovers; i ++){
         movers.push_back(mover());
     }
@@ -27,6 +29,8 @@ void ofApp::setup(){
         
     }
     
+//    attractor B = attractor(glm::vec2(300,400),30);
+    //how to call an individual one here
 }
 
 //--------------------------------------------------------------

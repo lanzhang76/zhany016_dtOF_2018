@@ -25,6 +25,7 @@ class ofApp : public ofBaseApp{
 		
     vector<attractor> A;
     vector<mover> movers;
+    // attractor B; //calling out indivisual element, using constructor
     float mass;
     
  

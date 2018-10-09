@@ -10,17 +10,17 @@
 mover::mover(){
     pos = glm::vec2(ofRandom(ofGetWidth())*0.5,ofRandom(ofGetHeight()*0.5));
     mass = ofRandom(0,3);
-        vel = glm::vec2(0,0);
+  
 
-//    vel = glm::vec2(ofRandom(1,1.4),ofRandom(1,1.8));
+    vel = glm::vec2(ofRandom(1,1.4),ofRandom(1,1.8));
     acc = glm::vec2(0,0);
 }
 
 mover::mover(glm::vec2 _pos, float _mass){
     pos = _pos;
     mass = _mass;
-    vel = glm::vec2(0,0);
-//    vel = glm::vec2(ofRandom(2,7),ofRandom(0,5));
+    
+    vel = glm::vec2(ofRandom(2,7),ofRandom(0,5));
     acc = glm::vec2(0,0);
 }
 
