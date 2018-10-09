@@ -2,72 +2,61 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    ofBackground(0);
-    
-   
-    
-    ofVec2f speed;
-    speed.set(0.01, 0.01);
-    
-    ofVec2f radius;
-    radius.set(10, 10);
-    
-    for (int i=0; i<30; i++) {
-        Ball[i].setup();
-    }
+    ofSetBackgroundColor(0);
     
     
-  
+    
+    
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    for (int i=0; i<30; i++) {
-        Ball[i].update(i+i*2);
+    
+    gravity = glm::vec2(0,0.5);
+    
+
+    
+    
+    for (int i = 0; i < elements.size();i ++){
+        elements[i].addForce(gravity);
+        elements[i].update();
     }
     
     
-    
-
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-//    Ball[0].draw(mouseX,mouseY,40);
-    for (int i=0; i<30; i++) {
-        float ball_x = mouseX + i*1.05;
-        float ball_y = mouseY + i*1.05;
-        Ball[i].draw(ball_x,ball_y,40);
+    int num = 20;
+    int maxElements = 5000;
+    for (int i = 0; i < num;i ++){
+        glm::vec2 mousePos = glm::vec2(ofGetMouseX(),ofGetMouseY());
+        glm::vec2 vel = glm::vec2(0,0.1);
+        //    float mass = ofRandom(1,6);
+        element Element = element(mousePos, vel, ofRandom(1,6));
+        elements.push_back(Element);
         
-        if (ofGetMousePressed())
-        {
-            ofSetLineWidth(2);
-            ofSetColor(ofRandom(255),ofRandom(255),ofRandom(255));
-            float a = ofMap(ball_x,ofGetMouseX(),ofGetMouseX()+300, 0,ofGetWidth());
-            float b = ofMap(ball_y,ofGetMouseY(),ofGetMouseY()+300,ofGetHeight(),0);
-            ofDrawLine(a, b, mouseX, mouseY);
-            ofDrawLine(mouseX, mouseY, b, a);
-            float time = ofGetElapsedTimef();
-            ofDrawCircle(mouseX+ofNoise(5),mouseY+ofNoise(4),sin(time));
-//            ofDrawLine(ball_x,ball_y,ofGetMouseX,ofGetMouseY());
-        }
     }
     
-    for (int t=0; t<30; t++) {
-        float B2_x = sin(t)*5;
-        float B2_y = cos(t)*5;
-        B2[t].draw(B2_x,B2_y,8);
-    }
-
+   
     
+    
+    for (int i = 0; i < elements.size();i ++){
+        elements[i].draw();
+    }
+    
+    while(elements.size() > maxElements){
+        elements.erase(elements.begin());
+    }
+    
+    ofDrawBitmapString("elements.size() = " + ofToString(elements.size()), 20, 20);
 
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    
-    
-    
+
 }
 
 //--------------------------------------------------------------
@@ -82,23 +71,27 @@ void ofApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-    for (int t=0; t<30; t++) {
-        float B2_x = sin(t)*15;
-        float B2_y = cos(t)*15;
-        B2[t].draw(B2_x,B2_y,8);
-    }
-   
+    int num = 20;
+    for (int i = 0; i < num;i ++){
+        glm::vec2 mousePos = glm::vec2(ofGetMouseX(),ofGetMouseY());
+        glm::vec2 vel = glm::vec2(0,2);
+        //    float mass = ofRandom(1,6);
+        element Element = element(mousePos, vel, ofRandom(1,6));
+//        Element.addForce(glm::vec2
+        elements.push_back(Element);
 
+//
+    }
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-
+   
 }
 
 //--------------------------------------------------------------

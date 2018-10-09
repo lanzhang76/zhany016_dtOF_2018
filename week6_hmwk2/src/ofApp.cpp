@@ -1,29 +1,52 @@
 #include "ofApp.h"
+int nMovers        = 40;
+int nAttractors    = 4;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofBackground(0);
+    ofSetBackgroundAuto(false);
+    ofSetFrameRate(100.);
+    ofEnableSmoothing();
     
-   
-    
-    ofVec2f speed;
-    speed.set(0.01, 0.01);
-    
-    ofVec2f radius;
-    radius.set(10, 10);
-    
-    for (int i=0; i<30; i++) {
-        Ball[i].setup();
+    for (int i = 0; i < nMovers; i ++){
+        movers.push_back(mover());
     }
     
+//    for (int i = 0; i < nAttractors; i ++){
+//        A.push_back(attractor());
+//    }
+    for (int i = 0; i <nAttractors; i++){
+//        glm::vec2 pos = glm::vec2(mouseX+ofRandom(5),mouseY+ofRandom(5));
+        
+          glm::vec2 pos = glm::vec2(ofGetWidth()*0.5,ofGetHeight()*0.5);
+        float mass = 4;
+        attractor MouseAttract = attractor(pos,mass);
+        
+        A.push_back(MouseAttract);
+        
+    }
     
-  
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    for (int i=0; i<30; i++) {
-        Ball[i].update(i+i*2);
+    
+    for (int a=0; a<nAttractors; a++)
+    {
+        for (int m=0; m<nMovers; m++)
+        {
+            // calculate force
+            glm::vec2 force = A[a].GetAttractForce(movers[m]);
+            
+            // apply force
+            movers[m].addForce(force);
+        }
+    }
+    
+    for (int m=0; m<nMovers; m++)
+    {
+        movers[m].update();
     }
     
     
@@ -33,41 +56,30 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-//    Ball[0].draw(mouseX,mouseY,40);
-    for (int i=0; i<30; i++) {
-        float ball_x = mouseX + i*1.05;
-        float ball_y = mouseY + i*1.05;
-        Ball[i].draw(ball_x,ball_y,40);
-        
-        if (ofGetMousePressed())
-        {
-            ofSetLineWidth(2);
-            ofSetColor(ofRandom(255),ofRandom(255),ofRandom(255));
-            float a = ofMap(ball_x,ofGetMouseX(),ofGetMouseX()+300, 0,ofGetWidth());
-            float b = ofMap(ball_y,ofGetMouseY(),ofGetMouseY()+300,ofGetHeight(),0);
-            ofDrawLine(a, b, mouseX, mouseY);
-            ofDrawLine(mouseX, mouseY, b, a);
-            float time = ofGetElapsedTimef();
-            ofDrawCircle(mouseX+ofNoise(5),mouseY+ofNoise(4),sin(time));
-//            ofDrawLine(ball_x,ball_y,ofGetMouseX,ofGetMouseY());
-        }
+    for (int a=0; a<nAttractors; a++)
+    {
+//        glm::vec2 pos = glm::vec2 (mouseX+ofRandom(5),mouseY+ofRandom(5));
+        glm::vec2 pos = glm::vec2(ofGetWidth()*0.5,ofGetHeight()*0.5);
+        A[a].draw(pos);
     }
     
-    for (int t=0; t<30; t++) {
-        float B2_x = sin(t)*5;
-        float B2_y = cos(t)*5;
-        B2[t].draw(B2_x,B2_y,8);
+    for (int m=0; m<nMovers; m++)
+    {
+        movers[m].draw();
     }
-
     
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    
-    
-    
+    for (int a=0; a<nAttractors; a++)
+    if (key == OF_KEY_UP){
+            A[a].addMass();
+    }else if (key == OF_KEY_DOWN){
+            A[a].decreaseMass();
+    }
+
 }
 
 //--------------------------------------------------------------
@@ -87,14 +99,14 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-    for (int t=0; t<30; t++) {
-        float B2_x = sin(t)*15;
-        float B2_y = cos(t)*15;
-        B2[t].draw(B2_x,B2_y,8);
-    }
-   
-
+//    for (int a=0; a<nAttractors; a++)
+//    {
+//        A[a].updateMass();
+//    }
+    
 }
+
+
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
