@@ -22,6 +22,7 @@ void ofApp::update(){
         elements[i].addForce(gravity);
         elements[i].update();
     }
+   
     
     
 }
@@ -32,7 +33,9 @@ void ofApp::draw(){
     int maxElements = 5000;
     for (int i = 0; i < num;i ++){
         glm::vec2 mousePos = glm::vec2(ofGetMouseX(),ofGetMouseY());
-        glm::vec2 vel = glm::vec2(0,0.1);
+        glm::vec2 vel = glm::vec2(0,ofRandom(-4,-1));
+
+//        glm::vec2 vel = glm::vec2(0,0.1);
         //    float mass = ofRandom(1,6);
         element Element = element(mousePos, vel, ofRandom(1,6));
         elements.push_back(Element);
@@ -46,9 +49,7 @@ void ofApp::draw(){
         elements[i].draw();
     }
     
-    while(elements.size() > maxElements){
-        elements.erase(elements.begin());
-    }
+    
     
     ofDrawBitmapString("elements.size() = " + ofToString(elements.size()), 20, 20);
     

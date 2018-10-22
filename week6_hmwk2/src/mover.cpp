@@ -68,8 +68,4 @@ void mover::draw(){
     ofDrawCircle(pos,mass);
     ofPopStyle();
     
-    
-    
-    
-    
 }

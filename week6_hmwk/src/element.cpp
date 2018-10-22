@@ -11,12 +11,17 @@ element::element(){
     pos = glm::vec2 (0,0);
     vel = glm::vec2 (0,0);
     acc = glm::vec2 (0,0);
+    
+    bornTime = ofGetElapsedTimef();
 }
 
 element::element(glm::vec2 _pos, glm::vec2 _vel, float _mass){
     pos = _pos;
     vel = _vel;
     mass = _mass;
+    
+    bornTime = ofGetElapsedTimef();
+    cout << bornTime << endl;
 }
 
 void element::addForce(glm::vec2 force){
@@ -32,8 +37,14 @@ void element::update(){
 void element::draw(){
     ofPushStyle();
     // hue based on mass
-    float hue       = ofMap(mass, 1, 6, 100, 200);
-    ofColor color   = ofColor::fromHsb(hue, 255, 200);
+    float hue = ofMap(mass, 1, 6, 100, 200);
+    float sat = 255;
+    float brightness = 255;
+    
+    float aliveTime = ofGetElapsedTimef()-bornTime;
+    float alpha = ofMap(aliveTime,0,0.5,255,0,true);
+    
+    ofColor color   = ofColor::fromHsb(hue, sat, brightness, alpha);
     
     ofSetColor(color);
 
