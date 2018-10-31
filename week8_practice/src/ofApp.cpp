@@ -1,69 +1,86 @@
 #include "ofApp.h"
 int nMovers = 10;
+int nGhost = 15;
 
 
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofBackground(0);
-    glm::vec2 pos = glm::vec2(0,0);
-    Ghost.setup(pos);
+   
+    for (int i = 0; i < nGhost; i++){
+        ofSetCircleResolution(100);
+        pos = glm::vec2(mouseX,mouseY);
+        radius = ofMap(i, 0, 15, 10, 30);
+        lerp = ofMap(radius, 30, 10, 0.1,0.03);
+        Ghost[i].setup(pos,radius,lerp);
+    }
     
     for (int i = 0; i < nMovers; i ++){
-        movers.push_back(mover());
+        glm::vec2 Mpos = glm::vec2(mouseX,mouseY);
+        movers.push_back(mover(Mpos));
     }
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    glm::vec2 target = glm::vec2(mouseX,mouseY);
-    glm::vec2 direction = target - pos;
+    glm::vec2 mouse;
+    mouse.x = ofGetMouseX();
+    mouse.y = ofGetMouseY();
+//    direction = target - pos;
+
+
+    for (int i = 0; i < nGhost; i ++){
+        Ghost[i].lerping(mouse);
+        glm::vec2 direction = mouse - Ghost[0].pos;
+//        Ghost[i].pos += direction * Ghost[i].lerp;
+
+    }
     
-    pos += (direction) * 0.1;
     
     float angleRadius = atan2(direction.y,direction.x);
     angle = ofRadToDeg(angleRadius);
     
-    
-  
-        for (int m=0; m<nMovers; m++)
-        {
+    //force added between ghost and movers
+    for (int m=0; m<nMovers; m++){
             // calculate force
-            glm::vec2 force = Ghost.GetAttractForce(movers[m]);
-            
-            // apply force
+            glm::vec2 force = Ghost[0].GetAttractForce(movers[m]);
             movers[m].addForce(force);
+            movers[m].update();
         }
     
     
-    for (int m=0; m<nMovers; m++)
-    {
-        movers[m].update();
-    }
+//    for (int m=0; m<nMovers; m++){
+//            movers[m].update();
+//        }
+    
     
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
 
+   // rotate our space
     ofPushMatrix();
-  
+    ofRotateDeg(angle);
+//    glm::vec2 pos = glm::vec2(mouseX,mouseY);
+    ofTranslate(Ghost[14].pos);
     
-    ofTranslate(pos);
-    
-    ofRotateDeg(angle);    // rotate our space
-    
-    Ghost.draw();
+    //ghost:
+    for (int i = 0; i < nGhost; i++){
+        float r = ofMap(Ghost[i].radius, 10,30, 100,255);
+        float b = ofMap(Ghost[i].radius, 10,30, 0,255);
+       Ghost[i].draw(r,b);
+    }
+    //movers:
     for (int m=0; m<nMovers; m++)
     {
         movers[m].draw();
     }
     
-    
-    ofPoint point;
-    point.x = 100;
-    point.y = 100;
-    ofTranslate(point);     // move the coordinate system to position of point and make that zero.
-    
+//    ofPoint point;
+//    point.x = 100;
+//    point.y = 100;
+//    ofTranslate(point);     // move the coordinate system to position of point and make that zero.
     
     ofPopMatrix();
     

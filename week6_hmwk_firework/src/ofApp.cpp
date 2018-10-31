@@ -4,18 +4,12 @@
 void ofApp::setup(){
     ofSetBackgroundColor(0);
     
-    
-    
-    
-    
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     
     gravity = glm::vec2(0,0.5);
-    
-    
     
     
     for (int i = 0; i < elements.size();i ++){
@@ -34,7 +28,6 @@ void ofApp::draw(){
     for (int i = 0; i < num;i ++){
         glm::vec2 mousePos = glm::vec2(ofGetMouseX(),ofGetMouseY());
         glm::vec2 vel = glm::vec2(0,ofRandom(-4,-1));
-
 //        glm::vec2 vel = glm::vec2(0,0.1);
         //    float mass = ofRandom(1,6);
         element Element = element(mousePos, vel, ofRandom(1,6));
@@ -57,6 +50,7 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+    
     
 }
 

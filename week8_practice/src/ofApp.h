@@ -23,10 +23,13 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
-    glm::vec2 pos, target;
-    float angle;
+    glm::vec2 pos,target,direction;
+    float angle, radius, lerp;
     
-    ghost Ghost;
+   ghost Ghost[15];
     vector<mover> movers;
+
+
+    
 		
 };

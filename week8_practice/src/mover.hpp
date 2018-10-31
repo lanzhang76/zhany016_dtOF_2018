@@ -6,7 +6,7 @@
 class mover{
 public:
     mover();
-    mover(glm::vec2 _pos, float _mass);
+    mover(glm::vec2 _pos);
     
     void addForce(glm::vec2 force);
     void bouncyWindow();
