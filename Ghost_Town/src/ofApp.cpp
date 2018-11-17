@@ -96,8 +96,8 @@ void ofApp::draw(){
     cam.begin();
     ofHideCursor();
     
-//        ofDrawAxis(500);
-    //    ofDrawGrid(100);
+        ofDrawAxis(500);
+        ofDrawGrid(100);
     
     ofPushMatrix();
     
